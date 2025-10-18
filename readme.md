@@ -66,7 +66,7 @@ This project is a multi-agent system that creates high-quality, factually-ground
 ### Step 1: Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/ai-poem-generator.git
+git clone https://github.com/PrioAhmed19/AI-Poet-Roulette.git
 cd ai-poem-generator
 ```
 
