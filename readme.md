@@ -42,7 +42,7 @@ This project is a multi-agent system that creates high-quality, factually-ground
 ### Multi-Agent System
 - **🌟 Google Poet** (Gemini 2.5 Flash) - Generates odd-numbered verses
 - **⚡ Groq Poet** (Llama 3.3 70B) - Generates even-numbered verses
-- **⚖️ Judge Agent** (Gemini Flash) - Evaluates and scores both poems
+- **⚖️ Judge Agent** (Gemini-2.0-flash-thinking-exp) - Evaluates and scores both poems
 
 ### Advanced Capabilities
 - 🔍 Semantic search using FAISS vector store
@@ -718,7 +718,7 @@ pip install -r requirements.txt
 - Strong reasoning capabilities
 - Temperature: 0.8 (creative balance)
 
-**Judge Model (Gemini Flash)**:
+**Judge Model (Gemini-2.0-flash-thinking-exp)**:
 - Better reasoning for evaluation
 - Temperature: 0.3 (more deterministic)
 - Comprehensive analysis capabilities
