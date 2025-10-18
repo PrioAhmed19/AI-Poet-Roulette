@@ -16,7 +16,7 @@
 
 ## 📖 Overview
 
-The AI Collaborative Poem Generator is an innovative multi-agent system that creates high-quality, factually-grounded poetry from various document types. Using a collaborative approach, two AI poets (Google Gemini and Groq Llama) work together to generate verses, while a third judge agent evaluates the results using comprehensive literary criteria.
+This project is a multi-agent system that creates high-quality, factually-grounded poetry from various document types. Using a collaborative approach, two AI poets (Google Gemini and Groq Llama) work together to generate verses, while a third judge agent evaluates the results using comprehensive literary criteria.
 
 ### ✨ Key Highlights
 
