@@ -1,4 +1,4 @@
-# 🎭 AI Collaborative Poem Generator
+# AI Poet Roulette
 
 <div align="center">
 
@@ -54,6 +54,244 @@ The AI Collaborative Poem Generator is an innovative multi-agent system that cre
 - 🖼️ Comprehensive image understanding (text + visual elements)
 
 ---
+
+## 🚀 Installation
+
+### Prerequisites
+
+- **Python**: 3.12.8 (recommended)
+- **Operating System**: Windows, macOS, or Linux
+- **Storage**: ~500MB for models and dependencies
+- **Internet**: Required for initial setup and API calls
+
+### Step 1: Clone Repository
+
+```bash
+git clone https://github.com/yourusername/ai-poem-generator.git
+cd ai-poem-generator
+```
+
+### Step 2: Install External Tools
+
+#### Tesseract OCR (Required for image processing)
+
+##### Windows
+1. Download the installer from: https://github.com/UB-Mannheim/tesseract/wiki
+2. Run the installer (e.g., `tesseract-ocr-w64-setup-5.3.3.20231005.exe`)
+3. **IMPORTANT**: During installation, note the installation path (default: `C:\Program Files\Tesseract-OCR`)
+4. Add to System PATH:
+   - Right-click "This PC" → Properties → Advanced system settings
+   - Click "Environment Variables"
+   - Under "System variables", find and select "Path"
+   - Click "Edit" → "New"
+   - Add: `C:\Program Files\Tesseract-OCR`
+   - Click OK on all dialogs
+5. **Verify installation**:
+   ```cmd
+   tesseract --version
+   ```
+
+##### macOS
+```bash
+brew install tesseract
+```
+
+##### Linux (Ubuntu/Debian)
+```bash
+sudo apt-get update
+sudo apt-get install tesseract-ocr
+```
+
+#### FFmpeg (Required for audio generation)
+
+##### Windows
+1. Download from: https://www.gyan.dev/ffmpeg/builds/
+2. Download "ffmpeg-release-essentials.zip"
+3. Extract to `C:\ffmpeg`
+4. Add to System PATH:
+   - Follow same steps as Tesseract
+   - Add: `C:\ffmpeg\bin`
+5. **Verify installation**:
+   ```cmd
+   ffmpeg -version
+   ```
+
+##### macOS
+```bash
+brew install ffmpeg
+```
+
+##### Linux (Ubuntu/Debian)
+```bash
+sudo apt-get install ffmpeg
+```
+
+### Step 3: Python Environment Setup
+
+#### Using Setup Scripts (Optional)
+
+**Linux/macOS**:
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+**Windows**:
+```cmd
+setup.bat
+```
+
+#### Manual Setup (Recommended)
+
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# Upgrade pip
+pip install --upgrade pip
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Step 4: Configure API Keys
+
+1. Copy the environment template:
+```bash
+cp .env.example .env
+```
+
+2. Edit `.env` file with your API keys:
+
+```env
+# Google Gemini API Key (FREE)
+GOOGLE_API_KEY=your_actual_google_key_here
+
+# Groq API Key (FREE)
+GROQ_API_KEY=your_actual_groq_key_here
+```
+
+#### Getting API Keys
+
+##### Google Gemini API Key (Free Tier)
+1. Visit: https://makersuite.google.com/app/apikey
+2. Sign in with Google account
+3. Click "Create API Key"
+4. Copy the key (starts with `AIza...`)
+5. Paste into `.env` file
+
+**Free Tier Limits**:
+- 60 requests per minute
+- 1,500 requests per day
+- Sufficient for most use cases
+
+##### Groq API Key (Free Tier)
+1. Visit: https://console.groq.com/
+2. Sign up / Log in
+3. Navigate to "API Keys" section
+4. Click "Create API Key"
+5. Copy the key (starts with `gsk_...`)
+6. Paste into `.env` file
+
+**Free Tier Limits**:
+- Very generous (14,400 requests per day)
+- Fast inference speeds
+
+### Step 5: Verify Installation
+
+```bash
+# Activate environment if not already active
+source venv/bin/activate  # macOS/Linux
+# or
+venv\Scripts\activate  # Windows
+
+# Run test suite
+python test_system.py
+```
+
+You should see:
+```
+✅ All tests passed! System is ready.
+```
+
+---
+
+## 💻 Usage
+
+### Basic Usage
+
+```bash
+# Generate poem from a document
+python main.py path/to/document.pdf
+```
+
+## 📁 Project Structure
+
+```
+ai-poem-generator/
+│
+├── main.py                    # CLI application entry point
+├── config.py                  # Configuration and API settings
+├── document_processor.py      # Document parsing (PDF, DOCX, TXT, images)
+├── vector_store_manager.py    # FAISS vector store operations
+├── poem_agents.py             # AI agents (Google, Groq, Judge)
+├── poem_workflow.py           # LangGraph workflow orchestration
+├── audio_generator.py         # Text-to-speech generation
+│
+├── example_script.py          # Programmatic usage examples
+├── test_system.py             # System verification tests
+│
+├── requirements.txt           # Python dependencies
+├── .env                       # Environment variables (create from .env.example)
+├── .gitignore                 # Git ignore rules
+│
+├── setup.sh                   # Linux/macOS setup script
+├── setup.bat / windows_setup.txt  # Windows setup script
+│
+├── readme.md                  # This file
+├── quickstart_guide.md        # Quick start instructions
+│
+├── sample_ai_article.txt      # Sample document for testing
+│
+├── results/                   # Output directory (auto-created)
+│   ├── poems.txt             # Human-readable output
+│   └── poem_results.json     # Structured JSON output
+│
+├── audio_outputs/             # Audio files (auto-created if --audio used)
+│   ├── poem_google.mp3       # Google poet's poem
+│   ├── poem_groq.mp3         # Groq poet's poem
+│   └── judgment.mp3          # Judgment audio
+│
+├── faiss_index/              # Vector store persistence (auto-created)
+│   └── poem_knowledge_base/  # FAISS index files
+│
+└── venv/                     # Virtual environment (created during setup)
+```
+
+### Core Files Explanation
+
+| File | Purpose |
+|------|---------|
+| `main.py` | Command-line interface and orchestration |
+| `config.py` | API keys, model settings, paths configuration |
+| `document_processor.py` | Extracts text from PDF, DOCX, TXT, and images |
+| `vector_store_manager.py` | Manages FAISS vector database operations |
+| `poem_agents.py` | Three AI agents: Google Poet, Groq Poet, Judge |
+| `poem_workflow.py` | LangGraph state machine for collaborative generation |
+| `audio_generator.py` | Text-to-speech using gTTS |
+| `example_script.py` | Code examples for programmatic usage |
+| `test_system.py` | Automated tests to verify installation |
+
+---
+
+
+
 
 ## 🏗️ Methodology
 
@@ -176,181 +414,6 @@ The judge agent uses a comprehensive 100-point scale:
 
 ---
 
-## 🚀 Installation
-
-### Prerequisites
-
-- **Python**: 3.12.8 (recommended)
-- **Operating System**: Windows, macOS, or Linux
-- **Storage**: ~500MB for models and dependencies
-- **Internet**: Required for initial setup and API calls
-
-### Step 1: Clone Repository
-
-```bash
-git clone https://github.com/yourusername/ai-poem-generator.git
-cd ai-poem-generator
-```
-
-### Step 2: Install External Tools
-
-#### Tesseract OCR (Required for image processing)
-
-##### Windows
-1. Download the installer from: https://github.com/UB-Mannheim/tesseract/wiki
-2. Run the installer (e.g., `tesseract-ocr-w64-setup-5.3.3.20231005.exe`)
-3. **IMPORTANT**: During installation, note the installation path (default: `C:\Program Files\Tesseract-OCR`)
-4. Add to System PATH:
-   - Right-click "This PC" → Properties → Advanced system settings
-   - Click "Environment Variables"
-   - Under "System variables", find and select "Path"
-   - Click "Edit" → "New"
-   - Add: `C:\Program Files\Tesseract-OCR`
-   - Click OK on all dialogs
-5. **Verify installation**:
-   ```cmd
-   tesseract --version
-   ```
-
-##### macOS
-```bash
-brew install tesseract
-```
-
-##### Linux (Ubuntu/Debian)
-```bash
-sudo apt-get update
-sudo apt-get install tesseract-ocr
-```
-
-#### FFmpeg (Required for audio generation)
-
-##### Windows
-1. Download from: https://www.gyan.dev/ffmpeg/builds/
-2. Download "ffmpeg-release-essentials.zip"
-3. Extract to `C:\ffmpeg`
-4. Add to System PATH:
-   - Follow same steps as Tesseract
-   - Add: `C:\ffmpeg\bin`
-5. **Verify installation**:
-   ```cmd
-   ffmpeg -version
-   ```
-
-##### macOS
-```bash
-brew install ffmpeg
-```
-
-##### Linux (Ubuntu/Debian)
-```bash
-sudo apt-get install ffmpeg
-```
-
-### Step 3: Python Environment Setup
-
-#### Using Setup Scripts (Recommended)
-
-**Linux/macOS**:
-```bash
-chmod +x setup.sh
-./setup.sh
-```
-
-**Windows**:
-```cmd
-setup.bat
-```
-
-#### Manual Setup
-
-```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Upgrade pip
-pip install --upgrade pip
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Step 4: Configure API Keys
-
-1. Copy the environment template:
-```bash
-cp .env.example .env
-```
-
-2. Edit `.env` file with your API keys:
-
-```env
-# Google Gemini API Key (FREE)
-GOOGLE_API_KEY=your_actual_google_key_here
-
-# Groq API Key (FREE)
-GROQ_API_KEY=your_actual_groq_key_here
-```
-
-#### Getting API Keys
-
-##### Google Gemini API Key (Free Tier)
-1. Visit: https://makersuite.google.com/app/apikey
-2. Sign in with Google account
-3. Click "Create API Key"
-4. Copy the key (starts with `AIza...`)
-5. Paste into `.env` file
-
-**Free Tier Limits**:
-- 60 requests per minute
-- 1,500 requests per day
-- Sufficient for most use cases
-
-##### Groq API Key (Free Tier)
-1. Visit: https://console.groq.com/
-2. Sign up / Log in
-3. Navigate to "API Keys" section
-4. Click "Create API Key"
-5. Copy the key (starts with `gsk_...`)
-6. Paste into `.env` file
-
-**Free Tier Limits**:
-- Very generous (14,400 requests per day)
-- Fast inference speeds
-
-### Step 5: Verify Installation
-
-```bash
-# Activate environment if not already active
-source venv/bin/activate  # macOS/Linux
-# or
-venv\Scripts\activate  # Windows
-
-# Run test suite
-python test_system.py
-```
-
-You should see:
-```
-✅ All tests passed! System is ready.
-```
-
----
-
-## 💻 Usage
-
-### Basic Usage
-
-```bash
-# Generate poem from a document
-python main.py path/to/document.pdf
-```
 
 ### Command-Line Options
 
@@ -628,64 +691,6 @@ pip install -r requirements.txt
 
 ---
 
-## 📁 Project Structure
-
-```
-ai-poem-generator/
-│
-├── main.py                    # CLI application entry point
-├── config.py                  # Configuration and API settings
-├── document_processor.py      # Document parsing (PDF, DOCX, TXT, images)
-├── vector_store_manager.py    # FAISS vector store operations
-├── poem_agents.py             # AI agents (Google, Groq, Judge)
-├── poem_workflow.py           # LangGraph workflow orchestration
-├── audio_generator.py         # Text-to-speech generation
-│
-├── example_script.py          # Programmatic usage examples
-├── test_system.py             # System verification tests
-│
-├── requirements.txt           # Python dependencies
-├── .env                       # Environment variables (create from .env.example)
-├── .gitignore                 # Git ignore rules
-│
-├── setup.sh                   # Linux/macOS setup script
-├── setup.bat / windows_setup.txt  # Windows setup script
-│
-├── readme.md                  # This file
-├── quickstart_guide.md        # Quick start instructions
-│
-├── sample_ai_article.txt      # Sample document for testing
-│
-├── results/                   # Output directory (auto-created)
-│   ├── poems.txt             # Human-readable output
-│   └── poem_results.json     # Structured JSON output
-│
-├── audio_outputs/             # Audio files (auto-created if --audio used)
-│   ├── poem_google.mp3       # Google poet's poem
-│   ├── poem_groq.mp3         # Groq poet's poem
-│   └── judgment.mp3          # Judgment audio
-│
-├── faiss_index/              # Vector store persistence (auto-created)
-│   └── poem_knowledge_base/  # FAISS index files
-│
-└── venv/                     # Virtual environment (created during setup)
-```
-
-### Core Files Explanation
-
-| File | Purpose |
-|------|---------|
-| `main.py` | Command-line interface and orchestration |
-| `config.py` | API keys, model settings, paths configuration |
-| `document_processor.py` | Extracts text from PDF, DOCX, TXT, and images |
-| `vector_store_manager.py` | Manages FAISS vector database operations |
-| `poem_agents.py` | Three AI agents: Google Poet, Groq Poet, Judge |
-| `poem_workflow.py` | LangGraph state machine for collaborative generation |
-| `audio_generator.py` | Text-to-speech using gTTS |
-| `example_script.py` | Code examples for programmatic usage |
-| `test_system.py` | Automated tests to verify installation |
-
----
 
 ## 🎓 Technical Details
 
@@ -733,28 +738,6 @@ ai-poem-generator/
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Development Setup
-
-```bash
-# Clone repo
-git clone https://github.com/yourusername/ai-poem-generator.git
-cd ai-poem-generator
-
-# Install development dependencies
-pip install -r requirements.txt
-pip install pytest black flake8
-
-# Run tests
-python test_system.py
-
-# Format code
-black .
-
-# Lint
-flake8 .
-```
-
----
 
 ## 📝 License
 
@@ -776,28 +759,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For questions, issues, or suggestions:
 - Open an issue on GitHub
-- Email: your.email@example.com
+- Email: prioahmedcr@gmail.com
 
 ---
-
-## 🗺️ Roadmap
-
-- [ ] Support for more LLM providers (OpenAI, Anthropic, etc.)
-- [ ] Web UI interface
-- [ ] Real-time streaming generation
-- [ ] Multiple poem styles (haiku, sonnet, limerick)
-- [ ] Multi-language support
-- [ ] Custom judging criteria weights
-- [ ] Collaborative refinement rounds
-- [ ] Batch processing mode
-- [ ] API endpoint deployment
-
----
-
-<div align="center">
-
-**⭐ Star this repository if you find it useful! ⭐**
-
-Made with ❤️ by AI Poetry Enthusiasts
-
-</div>
