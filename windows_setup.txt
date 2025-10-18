@@ -1,0 +1,95 @@
+@echo off
+REM Setup script for AI Poem Generator (Windows)
+REM Compatible with Python 3.12.8
+
+echo ================================
+echo Setting up AI Poem Generator...
+echo ================================
+
+REM Check Python version
+echo.
+echo Checking Python version...
+python --version
+if %errorlevel% neq 0 (
+    echo ERROR: Python not found!
+    echo Please install Python 3.12.8 from https://www.python.org/
+    pause
+    exit /b 1
+)
+
+REM Create virtual environment
+echo.
+echo Creating virtual environment...
+python -m venv venv
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to create virtual environment
+    pause
+    exit /b 1
+)
+
+REM Activate virtual environment
+echo.
+echo Activating virtual environment...
+call venv\Scripts\activate.bat
+
+REM Upgrade pip
+echo.
+echo Upgrading pip...
+python -m pip install --upgrade pip
+
+REM Install dependencies
+echo.
+echo Installing dependencies...
+pip install -r requirements.txt
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to install dependencies
+    pause
+    exit /b 1
+)
+
+REM Setup environment variables
+echo.
+echo Setting up environment variables...
+if not exist .env (
+    copy .env.example .env
+    echo Created .env file from template
+    echo.
+    echo IMPORTANT: Edit .env and add your API keys!
+    echo.
+    echo Required keys:
+    echo   1. GOOGLE_API_KEY
+    echo   2. GROQ_API_KEY
+    echo   3. ASTRA_DB_APPLICATION_TOKEN
+    echo   4. ASTRA_DB_ID
+) else (
+    echo .env file already exists
+)
+
+REM Create output directories
+echo.
+echo Creating output directories...
+if not exist results mkdir results
+if not exist audio_outputs mkdir audio_outputs
+echo Directories created
+
+REM Download embedding model
+echo.
+echo Downloading embedding model (this may take a moment)...
+python -c "from langchain_huggingface import HuggingFaceEmbeddings; HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')"
+
+echo.
+echo ================================
+echo Setup completed successfully!
+echo ================================
+echo.
+echo Next steps:
+echo 1. Edit .env and add your API keys
+echo 2. Run: venv\Scripts\activate.bat
+echo 3. Test: python main.py --help
+echo 4. Generate: python main.py your_document.pdf --audio
+echo.
+echo NOTE: You need to install Tesseract and ffmpeg separately:
+echo   - Tesseract: https://github.com/UB-Mannheim/tesseract/wiki
+echo   - ffmpeg: https://ffmpeg.org/download.html
+echo.
+pause
