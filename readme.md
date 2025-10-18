@@ -7,7 +7,6 @@
 [![LangChain](https://img.shields.io/badge/LangChain-🦜-green.svg)](https://langchain.com/)
 [![Google Gemini](https://img.shields.io/badge/Google-Gemini-orange.svg)](https://ai.google.dev/)
 
-*Transform documents into beautiful, factually-grounded poetry using collaborative AI agents*
 
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Methodology](#-methodology) • [Examples](#-examples)
 
